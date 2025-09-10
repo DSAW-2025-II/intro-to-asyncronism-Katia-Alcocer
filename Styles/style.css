@@ -1,0 +1,115 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+body {
+  background: #f7f7f7;
+  color: #333;
+}
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #fff;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+.sidebar .logo img {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.sidebar .search {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+.sidebar nav ul {
+  list-style: none;
+}
+.sidebar nav ul li {
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.sidebar nav ul li:hover {
+  background: #f0f0f0;
+}
+
+/* Main */
+.main {
+  flex: 1;
+  padding: 20px;
+}
+.main h1 {
+  margin-bottom: 10px;
+}
+.main input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  aspect-ratio: 3 / 4; 
+  min-width: 160px;
+  max-width: 220px;/*when I search for a card, it shouldn't be so big*/
+  border-radius: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0; 
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+.card p {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.card.normal   { background: #A8A77A; }
+.card.fighting { background: #C22E28; }
+.card.flying   { background: #A98FF3; }
+.card.poison   { background: #A33EA1; }
+.card.ground   { background: #E2BF65; }
+.card.rock     { background: #B6A136; }
+.card.bug      { background: #A6B91A; }
+.card.ghost    { background: #735797; }
+.card.steel    { background: #B7B7CE; }
+.card.fire     { background: #EE8130; }
+.card.water    { background: #6390F0; }
+.card.grass    { background: #7AC74C; }
+.card.electric { background: #F7D02C; } 
+.card.psychic  { background: #F95587; }
+.card.ice      { background: #96D9D6; } 
+.card.dragon   { background: #6F35FC; }
+.card.dark     { background: #705746; }
+.card.fairy    { background: #D685AD; }
+.card.shadow   { background: #5A5979; }
+.card.unknown  { background: #68A090; }
