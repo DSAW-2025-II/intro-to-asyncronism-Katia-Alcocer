@@ -34,15 +34,24 @@ body {
 }
 .sidebar nav ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
 }
-.sidebar nav ul li {
-  padding: 10px;
+.sidebar nav ul li a {
+  padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s;
+  text-decoration: none; 
+  color: #333; 
 }
-.sidebar nav ul li:hover {
-  background: #f0f0f0;
+.sidebar nav ul li a:hover {
+   background: #f0f0f0;
+   color: #2a75bb;       
+   transform: scale(1.1); 
 }
 
 /* Main */
