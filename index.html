@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="Styles/style.css">
   <link rel="icon" href="https://pngimg.com/uploads/pokeball/pokeball_PNG16.png" type="image/png">
 </head>
-</head>
 <body>
   <div class="container">
     <!-- Sidebar -->
@@ -18,7 +17,7 @@
       </div>
       <nav>
         <ul>
-            <li><a href=""><span>🔥</span> Tipos</a></li>
+            <li><a href="#"><span>🔥</span> Tipos</a></li>
             <li><a href="Pages/pokedex.html"><span>📖</span> Pokédex</a></li>
         </ul>
       </nav>
@@ -28,6 +27,7 @@
     <main class="main">
       <h1>Tipos</h1>
       <input type="text" id="searchInput" placeholder="Buscar...">
+      <div id="pokemon-card" style="display:none;"></div>
             <div class="cards" id="type-cards">
                     <div class="card normal">⭐<p>Normal</p></div>
                     <div class="card fighting">🥊<p>Lucha</p></div>
@@ -51,9 +51,12 @@
                     <div class="card unknown">❔<p>Desconocido</p></div>
             </div>
 
-
-    <div id="pokemon-card" style="display:none;"></div>
-
+            <div id="pokemon-section" style="display:none;">
+              <h2 id="type-title"></h2>
+              <div id="pokemon-list"></div>
+              <button id="load-more" style="display:none;">Ver más</button>
+              <button id="back-btn"> Volver a tipos</button>
+            </div>
     </main>
   </div>
     <script src="Scripts/config.js"></script>

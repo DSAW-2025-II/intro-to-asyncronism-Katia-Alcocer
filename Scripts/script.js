@@ -1,6 +1,12 @@
 /*Search cards by types of pokemon*/
 const searchInput = document.getElementById("searchInput");
 const cards = document.querySelectorAll(".card");
+const typeCards = document.getElementById("type-cards");
+const pokemonSection = document.getElementById("pokemon-section");
+const pokemonList = document.getElementById("pokemon-list");
+const typeTitle = document.getElementById("type-title");
+const loadMoreBtn = document.getElementById("load-more");
+const backBtn = document.getElementById("back-btn");
 
 
 if (searchInput) {
@@ -13,3 +19,73 @@ searchInput.addEventListener("input", () => {
 });
 }
 
+let currentPokemons = [];
+let currentIndex = 0;
+
+cards.forEach(card => {
+  card.addEventListener("click", async () => {
+    const type = card.classList[1]; // "fire", "water", etc.
+    await loadPokemonByType(type);
+  });
+});
+
+async function loadPokemonByType(type) {
+  typeCards.style.display = "none";       // hide cards
+  pokemonSection.style.display = "block"; // see pokemon section
+  typeTitle.textContent = `Pokémon tipo ${type}`;
+
+  pokemonList.innerHTML = `<p>Cargando...</p>`;
+  currentPokemons = [];
+  currentIndex = 0;
+
+  try {
+    const response = await fetch(`${CONFIG.API_URL}type/${type}`);
+    const data = await response.json();
+
+     if (!data.pokemon.length) {
+        pokemonList.innerHTML = `<p>No hay Pokémon registrados para el tipo ${type}</p>`;
+        loadMoreBtn.style.display = "none"; // hide button
+        return;
+        }
+    currentPokemons = data.pokemon.map(p => p.pokemon);
+    pokemonList.innerHTML = "";
+    showMorePokemons();
+  } catch (error) {
+    pokemonList.innerHTML = `<p>Error al cargar Pokémon de tipo ${type}</p>`;
+    console.error(error);
+  }
+}
+
+async function showMorePokemons() {
+  const nextBatch = currentPokemons.slice(currentIndex, currentIndex + 20);
+
+  for (let poke of nextBatch) {
+    const pokeData = await fetch(poke.url).then(res => res.json());
+    pokemonList.innerHTML += `
+      <div class="pokemon-item">
+        <img src="${pokeData.sprites.front_default}" alt="${pokeData.name}">
+        <p>${pokeData.name}</p>
+      </div>
+    `;
+  }
+
+  currentIndex += 20;
+
+  // show/hide "see more" button
+  if (currentIndex < currentPokemons.length) {
+    loadMoreBtn.style.display = "block";
+  } else {
+    loadMoreBtn.style.display = "none";
+  }
+}
+
+
+
+// Event "see more"
+loadMoreBtn.addEventListener("click", showMorePokemons);
+
+// return to the cards
+backBtn.addEventListener("click", () => {
+  pokemonSection.style.display = "none";
+  typeCards.style.display = "grid";
+});
