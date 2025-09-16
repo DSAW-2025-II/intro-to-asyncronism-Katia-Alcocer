@@ -6,12 +6,13 @@
   font-family: Arial, sans-serif;
 }
 body {
-  background: #f7f7f7;
+ background: #d0eaf5;
+background: linear-gradient(90deg,rgba(208, 234, 245, 1) 0%, rgba(131, 182, 222, 1) 50%, rgba(102, 179, 237, 1) 99%);
   color: #333;
 }
 .container {
   display: flex;
-  height: 100vh;
+  height: auto;
 }
 
 /* Sidebar */
@@ -71,22 +72,6 @@ body {
   max-width: 300px;
 }
 
-.card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  aspect-ratio: 3 / 4; 
-  min-width: 160px;
-  max-width: 220px;/*when I search for a card, it shouldn't be so big*/
-  border-radius: 16px;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  margin: 0; 
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  transition: transform 0.2s;
-}
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -94,34 +79,96 @@ body {
 
 }
 
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  aspect-ratio: 2 / 3;
+  min-width: 140px;
+  max-width: 200px;
+  border: 6px solid #0d1b4c; 
+  background: radial-gradient(circle at top left, var(--color-light), var(--color-dark));
+  border-radius: 12px;
+  box-shadow: 
+    0 6px 12px rgba(0,0,0,0.4), 
+    inset 0 4px 6px rgba(255,255,255,0.5);
+  color: #222;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0;
+  transition: transform 0.2s, box-shadow 0.3s;
+  text-align: center;
+  padding: 10px;
+  position: relative;
+  overflow: hidden;
+  border: 4px solid white;
+  box-shadow: 0 0 0 6px white inset;
+
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0.1) 40%,
+    transparent 60%
+  );
+  transform: rotate(-25deg);
+  animation: shine 4s infinite;
+  pointer-events: none;
+}
+
+/* Animation colleccion */
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(-25deg);
+  }
+  50% {
+    transform: translateX(0%) rotate(-25deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(-25deg);
+  }
+}
 .card:hover {
   transform: scale(1.05);
+  box-shadow: 
+    0 10px 18px rgba(0,0,0,0.6),
+    inset 0 4px 8px rgba(255,255,255,0.7);
 }
+
 .card p {
   margin-top: 10px;
   font-size: 16px;
 }
 
-.card.normal   { background: #A8A77A; }
-.card.fighting { background: #C22E28; }
-.card.flying   { background: #A98FF3; }
-.card.poison   { background: #A33EA1; }
-.card.ground   { background: #E2BF65; }
-.card.rock     { background: #B6A136; }
-.card.bug      { background: #A6B91A; }
-.card.ghost    { background: #735797; }
-.card.steel    { background: #B7B7CE; }
-.card.fire     { background: #EE8130; }
-.card.water    { background: #6390F0; }
-.card.grass    { background: #7AC74C; }
-.card.electric { background: #F7D02C; } 
-.card.psychic  { background: #F95587; }
-.card.ice      { background: #96D9D6; } 
-.card.dragon   { background: #6F35FC; }
-.card.dark     { background: #705746; }
-.card.fairy    { background: #D685AD; }
-.card.shadow   { background: #5A5979; }
-.card.unknown  { background: #68A090; }
+.card.normal   { --color-light: #dcdca6; --color-dark: #a8a878; }
+.card.fighting { --color-light: #e57373; --color-dark: #c22e28; }
+.card.flying   { --color-light: #c6b7f5; --color-dark: #705898; }
+.card.poison   { --color-light: #d67ee0; --color-dark: #a33ea1; }
+.card.ground   { --color-light: #f0d890; --color-dark: #926e29; }
+.card.rock     { --color-light: #d9c97c; --color-dark: #786824; }
+.card.bug      { --color-light: #d8e070; --color-dark: #6d7815; }
+.card.ghost    { --color-light: #a292bc; --color-dark: #493963; }
+.card.steel    { --color-light: #d8d8e7; --color-dark: #71717a; }
+.card.fire     { --color-light: #f5ac78; --color-dark: #e24242; }
+.card.water    { --color-light: #9db7f5; --color-dark: #445e9c; }
+.card.grass    { --color-light: #b0e57c; --color-dark: #4e8234; }
+.card.electric { --color-light: #fdf17c; --color-dark: #a1871f; }
+.card.psychic  { --color-light: #fba6c0; --color-dark: #a13959; }
+.card.ice      { --color-light: #c2f0f0; --color-dark: #639494; }
+.card.dragon   { --color-light: #9b6cf9; --color-dark: #4924a1; }
+.card.dark     { --color-light: #a39085; --color-dark: #49392f; }
+.card.fairy    { --color-light: #f4b6d9; --color-dark: #a13978; }
+.card.shadow   { --color-light: #7a78a8; --color-dark: #2c2c44; }
+.card.unknown  { --color-light: #9ac7c7; --color-dark: #446666; }
 
 #pokemon-list {
   display: grid;
@@ -159,8 +206,8 @@ body {
 
 .buttons-container {
   display: flex;
-  justify-content: flex-end; /* manda los botones a la derecha */
-  gap: 15px; /* espacio entre los botones */
+  justify-content: flex-end; 
+  gap: 15px;
   margin-top: 20px;
   margin-right: 20px;
 }
@@ -238,4 +285,12 @@ body {
   width: 80px;
   height: 80px;
   object-fit: contain;
+}
+
+.type-icon {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 8px auto; 
 }
