@@ -210,19 +210,31 @@ body {
   margin: 0 auto 10px auto;
 }
 
-.evolution-chain {
+
+.evolution-tree {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.evolution-item {
+.evolution-branch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.evolution-children {
+  display: flex;
+  gap: 30px;
+  margin-top: 15px;
+}
+
+.evolution-node {
   text-align: center;
 }
 
-.evolution-item img {
+.evolution-node img {
   width: 80px;
   height: 80px;
   object-fit: contain;

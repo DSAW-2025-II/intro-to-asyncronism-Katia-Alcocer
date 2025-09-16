@@ -121,25 +121,31 @@ async function showPokemonDetail(name) {
     const evoData = await fetch(evoChainUrl).then(res => res.json());
 
     // evolutions whith imgs
-      const evolutions = [];
-      let evo = evoData.chain;
+    //all evolutions 
+    const evolutions = getAllEvolutions(evoData.chain);
 
-      do {
-        evolutions.push(evo.species.name);
-        evo = evo.evolves_to[0];
-      } while (evo && evo.hasOwnProperty("evolves_to"));
+    // evolutions sprites
+    const evolutionSprites = await Promise.all(
+      evolutions.map(async (name) => {
+        const evoData = await fetch(`${CONFIG.API_URL}pokemon/${name}`).then(res => res.json());
+        return {
+          name,
+          img: evoData.sprites.front_default
+        };
+      })
+    );
 
-      // evolutions sprites
-      const evolutionSprites = await Promise.all(
-        evolutions.map(async (name) => {
-          const evoData = await fetch(`${CONFIG.API_URL}pokemon/${name}`).then(res => res.json());
-          return {
-            name,
-            img: evoData.sprites.front_default
-          };
-        })
-      );
+      function getAllEvolutions(chain) {
+        let result = [];
+        result.push(chain.species.name);
 
+        if (chain.evolves_to && chain.evolves_to.length > 0) {
+          chain.evolves_to.forEach(evo => {
+            result = result.concat(getAllEvolutions(evo));
+          });
+        }
+        return result;
+      }
 
   
     const mainCard = `
@@ -151,14 +157,11 @@ async function showPokemonDetail(name) {
         <p><b>Peso:</b> ${pokeData.weight}</p>
         <p><b>Tipos:</b> ${pokeData.types.map(t => t.type.name).join(", ")}</p>
         <div><b>Evoluciones:</b></div>
-        <div class="evolution-chain">
-          ${evolutionSprites.map(e => `
-            <div class="evolution-item">
-              <img src="${e.img}" alt="${e.name}">
-              <p>${e.name}</p>
-            </div>
-          `).join(" → ")}
+       
+        <div class="evolution-chain evolution-tree">
+          ${await renderEvolutionTree(evoData.chain)}
         </div>
+
       </div>
     `;
 
@@ -194,3 +197,36 @@ document.getElementById("back-to-list").addEventListener("click", () => {
   document.getElementById("pokemon-detail").style.display = "none";
   pokemonSection.style.display = "block";
 });
+
+
+// Evee evolutions
+async function renderEvolutionTree(chain) {
+  // get pokemon sprite
+  const pokeData = await fetch(`${CONFIG.API_URL}pokemon/${chain.species.name}`).then(res => res.json());
+  const img = pokeData.sprites.front_default;
+
+ 
+  let html = `
+    <div class="evolution-node">
+      <img src="${img}" alt="${chain.species.name}">
+      <p>${chain.species.name}</p>
+    </div>
+  `;
+  // if has evolutions, render them recursively
+  if (chain.evolves_to && chain.evolves_to.length > 0) {
+    const childrenHtml = await Promise.all(
+      chain.evolves_to.map(evo => renderEvolutionTree(evo))
+    );
+
+    html = `
+      <div class="evolution-branch">
+        ${html}
+        <div class="evolution-children">
+          ${childrenHtml.join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  return html;
+}
