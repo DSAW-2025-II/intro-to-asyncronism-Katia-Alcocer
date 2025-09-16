@@ -61,8 +61,10 @@ async function showMorePokemons() {
 
   for (let poke of nextBatch) {
     const pokeData = await fetch(poke.url).then(res => res.json());
+    const mainType = pokeData.types[0].type.name;
+
     pokemonList.innerHTML += `
-      <div class="pokemon-item">
+      <div class="card pokemon-card ${mainType}">
         <img src="${pokeData.sprites.front_default}" alt="${pokeData.name}">
         <p>${pokeData.name}</p>
       </div>
