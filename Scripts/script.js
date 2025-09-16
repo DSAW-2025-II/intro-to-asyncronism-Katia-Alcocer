@@ -120,13 +120,26 @@ async function showPokemonDetail(name) {
     const evoChainUrl = speciesData.evolution_chain.url;
     const evoData = await fetch(evoChainUrl).then(res => res.json());
 
-    // evolutions
-    const evolutions = [];
-    let evo = evoData.chain;
-    do {
-      evolutions.push(evo.species.name);
-      evo = evo.evolves_to[0];
-    } while (evo && evo.hasOwnProperty("evolves_to"));
+    // evolutions whith imgs
+      const evolutions = [];
+      let evo = evoData.chain;
+
+      do {
+        evolutions.push(evo.species.name);
+        evo = evo.evolves_to[0];
+      } while (evo && evo.hasOwnProperty("evolves_to"));
+
+      // evolutions sprites
+      const evolutionSprites = await Promise.all(
+        evolutions.map(async (name) => {
+          const evoData = await fetch(`${CONFIG.API_URL}pokemon/${name}`).then(res => res.json());
+          return {
+            name,
+            img: evoData.sprites.front_default
+          };
+        })
+      );
+
 
   
     const mainCard = `
@@ -137,7 +150,15 @@ async function showPokemonDetail(name) {
         <p><b>Altura:</b> ${pokeData.height}</p>
         <p><b>Peso:</b> ${pokeData.weight}</p>
         <p><b>Tipos:</b> ${pokeData.types.map(t => t.type.name).join(", ")}</p>
-        <p><b>Evoluciones:</b> ${evolutions.join(" → ")}</p>
+        <div><b>Evoluciones:</b></div>
+        <div class="evolution-chain">
+          ${evolutionSprites.map(e => `
+            <div class="evolution-item">
+              <img src="${e.img}" alt="${e.name}">
+              <p>${e.name}</p>
+            </div>
+          `).join(" → ")}
+        </div>
       </div>
     `;
 
