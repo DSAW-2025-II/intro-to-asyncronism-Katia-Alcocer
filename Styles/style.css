@@ -157,3 +157,28 @@ body {
   transform: scale(1.05);
 }
 
+.buttons-container {
+  display: flex;
+  justify-content: flex-end; /* manda los botones a la derecha */
+  gap: 15px; /* espacio entre los botones */
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #ff5757, #ff914d);
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+  transition: transform 0.2s, background 0.3s;
+}
+
+.action-btn:hover {
+  transform: scale(1.08);
+  background: linear-gradient(135deg, #ff914d, #ff5757);
+}
