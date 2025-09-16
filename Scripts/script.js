@@ -91,3 +91,85 @@ backBtn.addEventListener("click", () => {
   pokemonSection.style.display = "none";
   typeCards.style.display = "grid";
 });
+
+
+pokemonList.addEventListener("click", async (e) => {
+  const card = e.target.closest(".pokemon-card");
+  if (!card) return;
+
+  const name = card.querySelector("p").textContent;
+  await showPokemonDetail(name);
+});
+
+async function showPokemonDetail(name) {
+  // pokemon details
+  pokemonSection.style.display = "none";   
+  const detailSection = document.getElementById("pokemon-detail");
+  const detailCards = document.getElementById("pokemon-detail-cards");
+  const detailTitle = document.getElementById("pokemon-detail-title");
+
+  detailSection.style.display = "block";
+  detailTitle.textContent = `Detalles de ${name}`;
+  detailCards.innerHTML = "<p>Cargando...</p>";
+
+  try {
+    // firs
+    const pokeData = await fetch(`${CONFIG.API_URL}pokemon/${name}`).then(res => res.json());
+
+    const speciesData = await fetch(pokeData.species.url).then(res => res.json());
+    const evoChainUrl = speciesData.evolution_chain.url;
+    const evoData = await fetch(evoChainUrl).then(res => res.json());
+
+    // evolutions
+    const evolutions = [];
+    let evo = evoData.chain;
+    do {
+      evolutions.push(evo.species.name);
+      evo = evo.evolves_to[0];
+    } while (evo && evo.hasOwnProperty("evolves_to"));
+
+  
+    const mainCard = `
+      <div class="detail-card">
+        <h3>Datos principales</h3>
+        <img src="${pokeData.sprites.front_default}" alt="${pokeData.name}">
+        <p><b>Nombre:</b> ${pokeData.name}</p>
+        <p><b>Altura:</b> ${pokeData.height}</p>
+        <p><b>Peso:</b> ${pokeData.weight}</p>
+        <p><b>Tipos:</b> ${pokeData.types.map(t => t.type.name).join(", ")}</p>
+        <p><b>Evoluciones:</b> ${evolutions.join(" → ")}</p>
+      </div>
+    `;
+
+  
+    const fightCard = `
+      <div class="detail-card">
+        <h3>Datos de pelea</h3>
+        ${pokeData.stats.map(s => `<p><b>${s.stat.name}:</b> ${s.base_stat}</p>`).join("")}
+        <p><b>Habilidades:</b> ${pokeData.abilities.map(a => a.ability.name).join(", ")}</p>
+      </div>
+    `;
+
+
+    const extraCard = `
+      <div class="detail-card">
+        <h3>Datos extra</h3>
+        <p><b>Experiencia base:</b> ${pokeData.base_experience}</p>
+        <p><b>Orden:</b> ${pokeData.order}</p>
+        <p><b>Formas:</b> ${pokeData.forms.map(f => f.name).join(", ")}</p>
+      </div>
+    `;
+
+    
+    detailCards.innerHTML = mainCard + fightCard + extraCard;
+
+  } catch (err) {
+    detailCards.innerHTML = `<p>Error cargando datos de ${name}</p>`;
+    console.error(err);
+  }
+}
+
+document.getElementById("back-to-list").addEventListener("click", () => {
+  document.getElementById("pokemon-detail").style.display = "none";
+  pokemonSection.style.display = "block";
+});

@@ -182,3 +182,30 @@ body {
   transform: scale(1.08);
   background: linear-gradient(135deg, #ff914d, #ff5757);
 }
+
+
+.detail-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.detail-card {
+  flex: 1 1 250px;
+  background: #f8f8f8;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.detail-card:hover {
+  transform: scale(1.05);
+}
+
+.detail-card img {
+  width: 120px;
+  display: block;
+  margin: 0 auto 10px auto;
+}
