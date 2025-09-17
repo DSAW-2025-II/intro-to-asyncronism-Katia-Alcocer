@@ -19,7 +19,7 @@
       <nav>
         <ul>
             <li><a href="../index.html"><span>🔥</span> Tipos</a></li>
-            <li><a href="#"><span>📖</span> Pokédex</a></li>
+            <li><a href="pokedex.html"><span>📖</span> Pokédex</a></li>
         </ul>
       </nav>
     </aside>
@@ -48,9 +48,20 @@
             </select>
         </div>
 
+            <section id="pokemon-section" style="display:none;">
+              <div id="pokemon-list"></div>
+            </section>
+            <div id="pokemon-detail" style="display:none">
+                <h2 id="pokemon-detail-title"></h2>
+                <div id="pokemon-detail-cards" class="detail-cards"></div>
+                <button id="back-to-list" class="action-btn"> Regresar</button>
+            </div>
+
+
     </main>
   </div>
     <script src="../Scripts/config.js"></script>
     <script src="../Scripts/scriptpo.js"></script>
+    <script src="../Scripts/pokemonDetail.js"></script> 
 </body>
 </html>

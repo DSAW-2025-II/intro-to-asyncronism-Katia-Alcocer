@@ -75,6 +75,11 @@ async function showResults(value) {
     `;
 
     resultsContainer.appendChild(item);
+      item.addEventListener("click", () => {
+       window.showPokemonDetail(poke.name);// pokemonDetail.js
+    });
+
+
   }
 }
 
@@ -109,7 +114,7 @@ function renderPokemonList(reset = false) {
   toShow.forEach(async poke => {
   
    const item = document.createElement("div");
-item.classList.add("card", "pokemon-card"); // 👈 mismo estilo
+item.classList.add("card", "pokemon-card"); 
 
 const pokeData = await fetch(poke.url).then(res => res.json());
 const mainType = pokeData.types[0].type.name;
@@ -121,6 +126,9 @@ item.innerHTML = `
 `;
 
 resultsContainer.appendChild(item);
+  item.addEventListener("click", () => {
+     window.showPokemonDetail(poke.name);
+  });
 
   });
 
@@ -177,7 +185,7 @@ async function applyFilter(endpoint, value) {
       }));
     }
 
-    visibleCount = 20; // reiniciar cantidad 
+    visibleCount = 20; 
     renderPokemonList(true);
 
   } catch (error) {
@@ -209,4 +217,10 @@ document.getElementById("filter-region").addEventListener("change", e => {
 loadMoreBtn.addEventListener("click", () => {
   visibleCount += 20;
   renderPokemonList(true);
+});
+
+
+document.getElementById("back-to-list").addEventListener("click", () => {
+  document.getElementById("pokemon-detail").style.display = "none";
+  resultsContainer.style.display = "grid";
 });
