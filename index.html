@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Katia</title>
+  <link rel="stylesheet" href="Styles/style.css">
+  <link rel="icon" href="https://pngimg.com/uploads/pokeball/pokeball_PNG16.png" type="image/png">
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/International_Pokémon_logo.svg" alt="Pokemon Logo">
+
+      </div>
+      <nav>
+        <ul>
+            <li><a href="index.html"><span>🔥</span> Tipos</a></li>
+            <li><a href="Pages/pokedex.html"><span>📖</span> Pokédex</a></li>
+        </ul>
+      </nav>
+    </aside>
+  
+    
+    
+
+    <!-- Main -->
+    <main class="main">
+      
+      <div id="tipo-header">
+        <h1>Tipos</h1>
+        <input type="text" id="searchInput" placeholder="Buscar...">
+      </div>
+      
+      <div id="pokemon-card"></div>
+            <div class="cards" id="type-cards">
+                    <div class="card normal"><img src="img/normal.png" alt="Normal" class="type-icon"><p>Normal</p></div>
+                    <div class="card fighting"><img src="img/fighting.png" alt="Fight" class="type-icon"><p>Lucha</p></div>
+                    <div class="card flying"><img src="img/flying.png" alt="Fly" class="type-icon"><p>Volador</p></div>
+                    <div class="card poison"><img src="img/poison.png" alt="Poison" class="type-icon"><p>Veneno</p></div>
+                    <div class="card ground"><img src="img/ground.png" alt="Ground" class="type-icon"><p>Tierra</p></div>
+                    <div class="card rock"><img src="img/rock.png" alt="Rock" class="type-icon"><p>Roca</p></div>
+                    <div class="card bug"><img src="img/bug.png" alt="Bug" class="type-icon"><p>Bicho</p></div>
+                    <div class="card ghost"><img src="img/ghost.png" alt="Ghost" class="type-icon"><p>Fantasma</p></div>
+                    <div class="card steel"><img src="img/steel.png" alt="Steel" class="type-icon"><p>Acero</p></div>
+                    <div class="card fire"><img src="img/fire.png" alt="Fire" class="type-icon"><p>Fuego</p></div>
+                    <div class="card water"><img src="img/water.png" alt="Water" class="type-icon"><p>Agua</p></div>
+                    <div class="card grass"><img src="img/grass.png" alt="Grass" class="type-icon"><p>Planta</p></div>
+                    <div class="card electric"><img src="img/electric.png" alt="Electric" class="type-icon"><p>Eléctrico</p></div>
+                    <div class="card psychic"><img src="img/psychic.png" alt="Psychic" class="type-icon"><p>Psíquico</p></div>
+                    <div class="card ice"><img src="img/ice.png" alt="Ice" class="type-icon"><p>Hielo</p></div>
+                    <div class="card dragon"><img src="img/dragon.png" alt="Dragon" class="type-icon"><p>Dragón</p></div>
+                    <div class="card dark"><img src="img/dark.png" alt="Dark" class="type-icon"><p>Siniestro</p></div>
+                    <div class="card fairy"><img src="img/fayri.png" alt="Fayri" class="type-icon"><p>Hada</p></div>
+
+                    <div class="card shadow"><img src="img/shadow.png" alt="Shadow" class="type-icon"><p>Sombra</p></div>
+                    <div class="card unknown"><img src="img/unow.png" alt="Unknown" class="type-icon"><p>Desconocido</p></div>
+            </div>
+
+            <div id="pokemon-section" style="display:none;">
+              <h2 id="type-title"></h2>
+              <div id="pokemon-list"></div>
+
+              <div class="buttons-container">
+                <button id="load-more" class="action-btn" >Ver más</button>
+                <button id="back-btn" class="action-btn"> Volver a tipos</button>
+              </div>
+              
+            </div>
+            
+            <div id="pokemon-detail" style="display:none">
+                <h2 id="pokemon-detail-title"></h2>
+                <div id="pokemon-detail-cards" class="detail-cards"></div>
+                <button id="back-to-list" class="action-btn"> Regresar</button>
+            </div>
+
+    </main>
+  </div>
+    <script src="Scripts/config.js"></script>
+     <script src="Scripts/pokemonDetail.js"></script>
+    <script src="Scripts/script.js"></script>
+  
+   
+
+</body>
+</html>
