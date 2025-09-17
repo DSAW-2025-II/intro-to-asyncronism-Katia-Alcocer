@@ -40,15 +40,15 @@ async function fetchAllPokemon() {
     const response = await fetch(`${CONFIG.API_URL}pokemon?limit=1000`);
     const data = await response.json();
     allPokemon = data.results; 
-    searchInput.disabled = false; // use input
+    searchInput.disabled = false; 
   } catch (error) {
     console.error("Error cargando lista de Pokémon:", error);
   }
 }
 
 
-function showResults(value) {
-  resultsContainer.innerHTML = ""; // clear previous results
+async function showResults(value) {
+  resultsContainer.innerHTML = ""; 
 
   if (value === "") return;
 
@@ -56,22 +56,28 @@ function showResults(value) {
     poke.name.toLowerCase().includes(value.toLowerCase())
   );
 
-  // max 10 results
-  filtered.slice(0, 10).forEach(poke => {
-    const item = document.createElement("div");
-    item.classList.add("result-item");
-    item.textContent = poke.name;
 
-    //see img
-    const img = document.createElement("img");
-    const id = poke.url.split("/").filter(Boolean).pop();
-    img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
-    img.alt = poke.name;
-    item.prepend(img);
+  for (let poke of filtered.slice(0, 20)) {
+    const item = document.createElement("div");
+    item.classList.add("card", "pokemon-card");
+
+   
+    const pokeData = await fetch(poke.url).then(res => res.json());
+    const mainType = pokeData.types[0].type.name;
+    item.classList.add(mainType);
+
+   
+    item.innerHTML = `
+       
+        <img src="${pokeData.sprites.front_default || FALLBACK_SPRITE}" alt="${pokeData.name}">
+        <p>${pokeData.name}</p>
+     
+    `;
 
     resultsContainer.appendChild(item);
-  });
+  }
 }
+
 
 // while write
 searchInput.addEventListener("input", (e) => {
@@ -101,17 +107,21 @@ function renderPokemonList(reset = false) {
 
   const toShow = filteredPokemon.slice(0, visibleCount);
   toShow.forEach(async poke => {
-    const item = document.createElement("div");
-    item.classList.add("result-item");
-    item.textContent = poke.name;
+  
+   const item = document.createElement("div");
+item.classList.add("card", "pokemon-card"); // 👈 mismo estilo
 
-    const id = poke.url.split("/").filter(Boolean).pop();
-    const img = document.createElement("img");
-    img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
-    img.alt = poke.name;
-    item.prepend(img);
+const pokeData = await fetch(poke.url).then(res => res.json());
+const mainType = pokeData.types[0].type.name;
+item.classList.add(mainType);
 
-    resultsContainer.appendChild(item);
+item.innerHTML = `
+  <img src="${pokeData.sprites.front_default || FALLBACK_SPRITE}" alt="${pokeData.name}">
+  <p>${pokeData.name}</p>
+`;
+
+resultsContainer.appendChild(item);
+
   });
 
   // see more button, if more to show
