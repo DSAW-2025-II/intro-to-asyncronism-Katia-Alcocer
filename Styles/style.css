@@ -12,7 +12,7 @@ background: linear-gradient(90deg,rgba(208, 234, 245, 1) 0%, rgba(131, 182, 222,
 }
 .container {
   display: flex;
-  height: auto;
+  height: 100vh;
 }
 
 /* Sidebar */
