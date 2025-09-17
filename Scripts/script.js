@@ -117,11 +117,11 @@ async function showPokemonDetail(name) {
   detailCards.innerHTML = "<p>Cargando...</p>";
 
   try {
-    // 1. Datos del Pokémon
+    // pokemon data
     const pokeData = await fetch(`${CONFIG.API_URL}pokemon/${name}`).then(res => res.json());
     const speciesData = await fetch(pokeData.species.url).then(res => res.json());
 
-    // 2. Cadena de evoluciones (solo si existe)
+    // evolutions
     let evoData = null;
     if (speciesData.evolution_chain && speciesData.evolution_chain.url) {
       try {
@@ -133,13 +133,11 @@ async function showPokemonDetail(name) {
       }
     }
 
-    // 3. Evoluciones (árbol o texto por defecto)
     let evolutionHtml = "<p>Este Pokémon no tiene evoluciones.</p>";
     if (evoData && evoData.chain) {
       evolutionHtml = await renderEvolutionTree(evoData.chain);
     }
 
-    // 4. Armar tarjetas
     const mainCard = `
       <div class="detail-card">
         <h3>Datos principales</h3>
@@ -158,7 +156,19 @@ async function showPokemonDetail(name) {
     const fightCard = `
       <div class="detail-card">
         <h3>Datos de pelea</h3>
-        ${pokeData.stats.map(s => `<p><b>${s.stat.name}:</b> ${s.base_stat}</p>`).join("")}
+       ${pokeData.stats.map(s => `
+          <div class="stat-bar">
+            <span class="stat-name">${s.stat.name}</span>
+            <div class="bar-container">
+              <div class="bar-fill" data-value="${s.base_stat > 150 ? 150 : s.base_stat}"
+              style="background:${getStatColor(s.stat.name)}">  
+              <span class="bar-value">${s.base_stat}</span>
+              </div>
+            </div>
+          </div>
+        `).join("")}
+
+
         <p><b>Habilidades:</b> ${pokeData.abilities.map(a => a.ability.name).join(", ")}</p>
       </div>
     `;
@@ -173,6 +183,30 @@ async function showPokemonDetail(name) {
     `;
 
     detailCards.innerHTML = mainCard + fightCard + extraCard;
+
+    const bars = document.querySelectorAll(".bar-fill");
+    bars.forEach(bar => {
+      const value = bar.getAttribute("data-value");
+      setTimeout(() => {
+        bar.style.width = value + "px";
+      }, 200); 
+    });
+
+    bars.forEach(bar => {
+      const value = parseInt(bar.getAttribute("data-value"));
+      let current = 0;
+      const text = bar.querySelector(".bar-value");
+
+      const interval = setInterval(() => {
+        if (current >= value) {
+          clearInterval(interval);
+        } else {
+          current++;
+          text.textContent = current;
+        }
+      }, 15);
+    });
+
 
   } catch (err) {
     detailCards.innerHTML = `<p>Error cargando datos de ${name}</p>`;
@@ -224,6 +258,19 @@ document.getElementById("back-to-list").addEventListener("click", () => {
   document.getElementById("pokemon-detail").style.display = "none";
   pokemonSection.style.display = "block";
 });
+
+
+function getStatColor(stat) {
+  switch(stat) {
+    case "hp": return "linear-gradient(90deg, #ff5959, #d32f2f)";
+    case "attack": return "linear-gradient(90deg, #ff9f43, #e65100)";
+    case "defense": return "linear-gradient(90deg, #4fc3f7, #0277bd)";
+    case "special-attack": return "linear-gradient(90deg, #ba68c8, #6a1b9a)";
+    case "special-defense": return "linear-gradient(90deg, #81c784, #2e7d32)";
+    case "speed": return "linear-gradient(90deg, #fdd835, #f57f17)";
+    default: return "linear-gradient(90deg, #b0bec5, #455a64)";
+  }
+}
 
 
 
