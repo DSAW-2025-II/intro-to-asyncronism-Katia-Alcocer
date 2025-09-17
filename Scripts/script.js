@@ -114,6 +114,4 @@ document.getElementById("back-to-list").addEventListener("click", () => {
 });
 
 
-
-
 });

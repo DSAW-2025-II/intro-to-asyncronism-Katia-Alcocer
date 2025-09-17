@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 const searchInput = document.querySelector(".search");
 const resultsContainer = document.createElement("div");
 
@@ -108,32 +109,39 @@ document.querySelector(".main").appendChild(loadMoreBtn);
 
 // show the results on screen
 function renderPokemonList(reset = false) {
-  if (reset) resultsContainer.innerHTML = "";
+  if (reset) {
+    resultsContainer.innerHTML = "";
+    renderedCount = 0;
+  }
 
+  // Mostrar siempre desde el inicio hasta visibleCount
   const toShow = filteredPokemon.slice(0, visibleCount);
-  toShow.forEach(async poke => {
-  
-   const item = document.createElement("div");
-item.classList.add("card", "pokemon-card"); 
 
-const pokeData = await fetch(poke.url).then(res => res.json());
-const mainType = pokeData.types[0].type.name;
-item.classList.add(mainType);
+  (async () => {
+    resultsContainer.innerHTML = ""; // Limpia siempre antes de renderizar
+    for (let poke of toShow) {
+      const item = document.createElement("div");
+      item.classList.add("card", "pokemon-card");
 
-item.innerHTML = `
-  <img src="${pokeData.sprites.front_default || FALLBACK_SPRITE}" alt="${pokeData.name}">
-  <p>${pokeData.name}</p>
-`;
+      const pokeData = await fetch(poke.url).then(res => res.json());
+      const mainType = pokeData.types[0].type.name;
+      item.classList.add(mainType);
 
-resultsContainer.appendChild(item);
-  item.addEventListener("click", () => {
-     window.showPokemonDetail(poke.name);
-  });
+      item.innerHTML = `
+        <img src="${pokeData.sprites.front_default || FALLBACK_SPRITE}" alt="${pokeData.name}">
+        <p>${pokeData.name}</p>
+      `;
 
-  });
+      resultsContainer.appendChild(item);
 
-  // see more button, if more to show
-  loadMoreBtn.style.display = (visibleCount < filteredPokemon.length) ? "block" : "none";
+      item.addEventListener("click", () => {
+        window.showPokemonDetail(poke.name);
+      });
+    }
+
+    renderedCount = resultsContainer.children.length;
+    loadMoreBtn.style.display = (visibleCount < filteredPokemon.length) ? "block" : "none";
+  })();
 }
 
 // Filters pokemons
@@ -209,18 +217,20 @@ document.getElementById("filter-color").addEventListener("change", e => {
   applyFilter("pokemon-color", e.target.value);
 });
 
-document.getElementById("filter-region").addEventListener("change", e => {
-  applyFilter("region", e.target.value);
-});
-
 // see more button
 loadMoreBtn.addEventListener("click", () => {
   visibleCount += 20;
-  renderPokemonList(true);
+  renderPokemonList(); 
 });
 
+const backToListBtn = document.getElementById("back-to-list");
+if (backToListBtn) {
+  backToListBtn.addEventListener("click", () => {
+    document.getElementById("pokemon-detail").style.display = "none";
+    resultsContainer.style.display = "grid";  
+    renderPokemonList();  
+    loadMoreBtn.style.display = (visibleCount < filteredPokemon.length) ? "block" : "none";
+  });
+}
 
-document.getElementById("back-to-list").addEventListener("click", () => {
-  document.getElementById("pokemon-detail").style.display = "none";
-  resultsContainer.style.display = "grid";
 });
