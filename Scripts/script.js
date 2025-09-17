@@ -9,7 +9,7 @@ const loadMoreBtn = document.getElementById("load-more");
 const backBtn = document.getElementById("back-btn");
 // Img "¿Who is that Pokémon??"
 const FALLBACK_SPRITE = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png";
-
+const tipoHeader = document.getElementById("tipo-header");
 
 if (searchInput) {
 searchInput.addEventListener("input", () => {
@@ -34,6 +34,7 @@ cards.forEach(card => {
 async function loadPokemonByType(type) {
   typeCards.style.display = "none";       // hide cards
   pokemonSection.style.display = "block"; // see pokemon section
+  tipoHeader.style.display = "none"; 
   typeTitle.textContent = `Pokémon tipo ${type}`;
 
   pokemonList.innerHTML = `<p>Cargando...</p>`;
@@ -92,6 +93,7 @@ loadMoreBtn.addEventListener("click", showMorePokemons);
 backBtn.addEventListener("click", () => {
   pokemonSection.style.display = "none";
   typeCards.style.display = "grid";
+  tipoHeader.style.display = "block"; 
 });
 
 
